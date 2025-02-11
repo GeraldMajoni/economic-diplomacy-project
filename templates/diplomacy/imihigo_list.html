@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Imihigo – Economic Diplomacy Portal</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #E6F7FF;
+      padding: 20px;
+      margin: 0;
+    }
+    header {
+      background-color: #00AEEF;
+      padding: 15px;
+      text-align: center;
+      color: #FFD700;
+      margin-bottom: 20px;
+    }
+    nav {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    nav a.button {
+      background-color: #00AEEF;
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      border-radius: 5px;
+      margin: 0 10px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 40px; /* Increased margin-top for spacing */
+      margin-bottom: 80px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+    .logout-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: red;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Manage Imihigo – Economic Diplomacy Portal</h1>
+  </header>
+  <nav>
+    <a class="button" href="{% url 'imihigo-create' %}">Add New Record</a>
+    <a class="button" href="{% url 'dashboard' %}">Return to Dashboard</a>
+  </nav>
+  <table>
+    <thead>
+      <tr>
+        <th>Quarter</th>
+        <th>Baseline Target</th>
+        <th>Actual Result</th>
+        <th>Variance (%)</th>
+        <th>Comments</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for record in imihigos %}
+      <tr>
+        <td>{{ record.quarter }}</td>
+        <td>{{ record.baseline_target }}</td>
+        <td>{{ record.actual_result }}</td>
+        <td>{{ record.variance|floatformat:2 }}%</td>
+        <td>{{ record.comments }}</td>
+        <td>
+          <a class="button" href="{% url 'imihigo-update' record.pk %}">Edit</a>
+          <a class="button" href="{% url 'imihigo-delete' record.pk %}">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">No Imihigo records found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</body>
+</html>

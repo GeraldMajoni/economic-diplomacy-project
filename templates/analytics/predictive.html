@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Predictive Analytics</title>
+    <style>
+        body { font-family: 'Roboto', sans-serif; background-color: #F0F8FF; padding: 20px; }
+        h1, h2 { color: #00AEEF; }
+        table { border-collapse: collapse; width: 50%; margin: 20px auto; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #eee; }
+        .button { background-color: #00AEEF; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; }
+        .logout-btn { background-color: red; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px; }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+</head>
+<body>
+    <h1>Predictive Analytics for Zimbabwe Economic Data</h1>
+    {% if inflation_prediction and exchange_prediction %}
+        <h2>Inflation Prediction</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Prediction (USD YoY Inflation)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ inflation_prediction|floatformat:2 }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>Exchange Rate Prediction</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Prediction (Official Exchange Rate)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ exchange_prediction|floatformat:4 }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p>{{ message }}</p>
+    {% else %}
+        <p>{{ message }}</p>
+    {% endif %}
+    <p><a class="button" href="{% url 'dashboard' %}">Return to Dashboard</a></p>
+</body>
+</html>

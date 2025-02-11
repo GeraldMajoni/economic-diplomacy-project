@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Imihigo Record</title>
+</head>
+<body>
+    <h1>Delete Imihigo Record</h1>
+    <p>Are you sure you want to delete the record for Quarter {{ object.quarter }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'imihigo-list' %}">Cancel</a>
+</body>
+</html>

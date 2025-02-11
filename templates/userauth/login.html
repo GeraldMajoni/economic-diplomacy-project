@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Economic Diplomacy Log In</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <style>
+    /* Background image settings */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: url('/static/images/login_background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    /* Login container: narrower, reduced height, more transparency with subtle border */
+    .login-container {
+      background-color: rgba(255, 255, 255, 0.5); /* Increased transparency */
+      width: 260px;           /* Narrower container */
+      margin: 60px auto;      /* Reduced top margin to move container up */
+      padding: 15px;          /* Reduced padding to lower overall height */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.7); /* Subtle border for better readability */
+    }
+    /* Heading style: slightly smaller font size */
+    .login-container h1 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #003366;         /* Contrasting dark blue */
+      font-size: 20px;
+    }
+    /* Input fields: styling remains consistent */
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    /* Button styling */
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #00AEEF;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .login-container button:hover {
+      background-color: #0088cc;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Economic Diplomacy Log In</h1>
+    <form method="post" action="">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username">
+      <input type="password" name="password" placeholder="Password">
+      <button type="submit">Log In</button>
+    </form>
+  </div>
+</body>
+</html>

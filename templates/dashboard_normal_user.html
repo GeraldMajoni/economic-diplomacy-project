@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #E6F7FF;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #00AEEF;
+            padding: 15px;
+            text-align: center;
+            color: #FFD700;
+        }
+        /* Header navigation styling */
+        header nav {
+            margin-top: 10px;
+        }
+        header nav a {
+            margin: 0 15px;
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        header nav a:hover {
+            border: 1px solid #FFD700;
+        }
+        nav.section-nav {
+            text-align: center;
+            margin: 20px 0;
+        }
+        nav.section-nav a {
+            margin: 0 15px;
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .logout-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .button {
+            background-color: #00AEEF;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        form.filter-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 30px auto 80px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <img src="/static/images/diplomacy_logo.png" alt="Diplomacy Logo" style="width:100px; height:auto;">
+        <h1>Welcome, {{ user.username }}!</h1>
+        <!-- Updated header navigation with About Application and Contact Us links -->
+        <nav>
+            <a class="button" href="{% url 'content:about-application' %}">About Application</a>
+            <a class="button" href="{% url 'content:contact-us' %}">Contact Us</a>
+        </nav>
+    </header>
+    <section>
+        <h2>Recent Companies ({{ selected_country }})</h2>
+        <form method="get" class="filter-form">
+            <label for="country">Country:</label>
+            <select name="country" id="country">
+                <option value="Zimbabwe" {% if selected_country == "Zimbabwe" %}selected{% endif %}>Zimbabwe</option>
+                <option value="Botswana" {% if selected_country == "Botswana" %}selected{% endif %}>Botswana</option>
+                <option value="Rwanda" {% if selected_country == "Rwanda" %}selected{% endif %}>Rwanda</option>
+            </select>
+            <button type="submit" class="button">Filter</button>
+        </form>
+        {% if recent_companies %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Company Name</th>
+                        <th>Date of Engagement</th>
+                        <th>Business Interests</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for company in recent_companies %}
+                        <tr>
+                            <td>{{ company.company_name }}</td>
+                            <td>{{ company.date_of_engagement }}</td>
+                            <td>{{ company.business_interests }}</td>
+                            <td>{{ company.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No companies found for {{ selected_country }}.</p>
+        {% endif %}
+    
+        <h2>Recent Economic Data ({{ selected_country }})</h2>
+        {% if recent_economic %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        {% if selected_country == "Zimbabwe" %}
+                            <th>Central Bank Rate</th>
+                            <th>Reserve Money</th>
+                            <th>Broad Money (M3)</th>
+                            <th>USD YoY Inflation</th>
+                            <th>ZWG MoM Inflation</th>
+                            <th>USD MoM Inflation</th>
+                            <th>Official Exchange Rate</th>
+                            <th>Parallel Exchange Rate</th>
+                            <th>Monthly Trade Balance</th>
+                            <th>GDP</th>
+                        {% elif selected_country == "Rwanda" %}
+                            <th>Year-on-Year Inflation</th>
+                            <th>Official Exchange Rate</th>
+                            <th>Monthly Trade Balance</th>
+                            <th>GDP</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in recent_economic %}
+                        <tr>
+                            <td>{{ record.date }}</td>
+                            {% if selected_country == "Zimbabwe" %}
+                                <td>{{ record.central_bank_rate }}</td>
+                                <td>{{ record.reserve_money }}</td>
+                                <td>{{ record.broad_money_m3 }}</td>
+                                <td>{{ record.usd_yoy_inflation }}</td>
+                                <td>{{ record.zwg_mom_inflation }}</td>
+                                <td>{{ record.usd_mom_inflation }}</td>
+                                <td>{{ record.official_exchange_rate }}</td>
+                                <td>{{ record.parallel_exchange_rate }}</td>
+                                <td>{{ record.monthly_trade_balance }}</td>
+                                <td>{{ record.gdp }}</td>
+                            {% elif selected_country == "Rwanda" %}
+                                <td>{{ record.rwanda_yoy_inflation }}</td>
+                                <td>{{ record.official_exchange_rate }}</td>
+                                <td>{{ record.monthly_trade_balance }}</td>
+                                <td>{{ record.gdp }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No economic data available for {{ selected_country }}.</p>
+        {% endif %}
+    
+        <h2>Analytics</h2>
+        <a class="button" href="{% url 'analytics:train-model' %}">Train Model</a>
+        <a class="button" href="{% url 'analytics:predictive' %}">Predict</a>
+        <a class="button" href="{% url 'analytics:chatbot' %}">Chat with Assistant</a>
+        <a class="button" href="{% url 'analytics:grafana-dashboard' %}">View Economic Visualizations</a>
+    </section>
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</body>
+</html>

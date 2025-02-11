@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Rwanda Economic Data</title>
+</head>
+<body>
+    <h1>Delete Rwanda Economic Data</h1>
+    <p>Are you sure you want to delete the record from {{ object.date }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'rwanda-economic-list' %}">Cancel</a>
+</body>
+</html>

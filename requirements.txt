@@ -1,0 +1,12 @@
+Django>=3.2,<4.0
+gunicorn
+djangorestframework
+mlflow
+mysqlclient
+xgboost
+scikit-learn
+joblib
+transformers
+torch
+openai
+mistune

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Superuser Dashboard</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #E6F7FF;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #00AEEF;
+      padding: 15px;
+      text-align: center;
+      color: #FFFFFF; /* Changed header text color to white */
+    }
+    /* Header navigation styling */
+    header nav {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    header nav a {
+      color: #FFFFFF; /* White text for nav links */
+      text-decoration: none;
+      font-weight: bold;
+      padding: 5px 10px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background-color: #00AEEF;
+    }
+    header nav a:hover {
+      border: 1px solid #FFFFFF;
+    }
+    .content-placeholder {
+      text-align: center;
+      margin: 40px;
+      font-size: 24px;
+      color: #00AEEF;
+    }
+    .logout-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: red;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="/static/images/diplomacy_logo.png" alt="Diplomacy Logo" style="width:100px; height:auto;">
+    <h1>Welcome, Superuser {{ user.username }}!</h1>
+    <nav>
+      <a href="{% url 'company-list' %}">Manage Companies</a>
+      <a href="{% url 'imihigo-list' %}">Manage Imihigo</a>
+      <a href="{% url 'zimbabwe-economic-list' %}">Manage Zimbabwe Economic Data</a>
+      <a href="{% url 'rwanda-economic-list' %}">Manage Rwanda Economic Data</a>
+      <a href="{% url 'analytics:train-model' %}">Train Model</a>
+      <a href="{% url 'analytics:predictive' %}">Predict</a>
+      <a href="{% url 'analytics:chatbot' %}">Chat with Assistant</a>
+      <a href="http://127.0.0.1:8000/admin/" class="button">Content</a>
+    </nav>
+  </header>
+  
+  <!-- Minimal dashboard content placeholder for superuser -->
+  <div class="content-placeholder">
+    Superuser Dashboard Overview
+  </div>
+  
+  <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</body>
+</html>

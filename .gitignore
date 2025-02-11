@@ -1,0 +1,80 @@
+# Ignore Python compiled files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Ignore Django-specific files
+*.log
+*.pot
+*.pyc
+*.swp
+*.swo
+*.bak
+*.tmp
+debug.log
+gunicorn.log
+
+# Ignore database files
+*.sqlite3
+*.db
+__db.sqlite3
+
+# Ignore MySQL configuration files (DO NOT COMMIT)
+.env
+db.sqlite3
+mysql_dump.sql
+
+# Ignore Django migration cache
+*.pyc
+*.pyo
+__pycache__/
+migrations/
+
+# Ignore virtual environments
+venv/
+.venv/
+economic_diplomacy_env/
+pyvenv.cfg
+
+# Ignore User Authentication & Secrets (If Needed)
+userauth/migrations/
+userauth/__pycache__/
+userauth/__init__.pyc
+userauth/*.pyc
+userauth/*.pyo
+
+# Ignore IDE-specific files
+.vscode/
+.idea/
+*.iml
+
+# Ignore static and media files (Django)
+staticfiles/
+media/
+
+# Ignore secret key files
+.env
+config/settings/local.py
+config/settings/dev.py
+
+# Ignore Docker-related files
+*.dockerfile
+docker-compose.override.yml
+
+# Ignore mlartifacts & MLflow runs
+mlartifacts
+mlruns
+
+# Ignore OS system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Ignore Node.js frontend dependencies 
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Ignore Jupyter Notebook Checkpoints
+.ipynb_checkpoints/

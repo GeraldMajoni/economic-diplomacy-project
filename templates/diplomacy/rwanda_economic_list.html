@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Rwanda Economic Data – Economic Diplomacy Portal</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #E6F7FF;
+            padding: 20px;
+            margin: 0;
+        }
+        header {
+            background-color: #00AEEF;
+            padding: 15px;
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a.button {
+            background-color: #00AEEF;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+            margin-bottom: 80px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+        .logout-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: red;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Manage Rwanda Economic Data</h1>
+    </header>
+    <nav>
+        <a class="button" href="{% url 'rwanda-economic-create' %}">Add New Record</a>
+        <a class="button" href="{% url 'dashboard' %}">Return to Dashboard</a>
+    </nav>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Year-on-Year Inflation</th>
+                <th>Official Exchange Rate</th>
+                <th>Monthly Trade Balance</th>
+                <th>GDP</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in data %}
+            <tr>
+                <td>{{ record.date }}</td>
+                <td>{{ record.rwanda_yoy_inflation }}</td>
+                <td>{{ record.official_exchange_rate }}</td>
+                <td>{{ record.monthly_trade_balance }}</td>
+                <td>{{ record.gdp }}</td>
+                <td>
+                    <a class="button" href="{% url 'rwanda-economic-update' record.pk %}">Edit</a>
+                    <a class="button" href="{% url 'rwanda-economic-delete' record.pk %}">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</body>
+</html>

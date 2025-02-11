@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Economic Dashboard</title>
+    <!-- Import Google Fonts (Roboto) -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #E6F7FF;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            background-color: #00AEEF;
+            padding: 15px;
+            text-align: center;
+            color: #FFD700;
+        }
+        .iframe-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .bottom-buttons {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .bottom-buttons a {
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .return-btn {
+            background-color: #00AEEF; /* Blue */
+            color: white;
+        }
+        .logout-btn {
+            background-color: red; /* Red */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Economic Dashboard</h1>
+    </header>
+    <div class="iframe-container">
+        <!-- Use your provided public dashboard link with a refresh parameter -->
+        <iframe src="http://localhost:3000/public-dashboards/4dc7e8e4f38242f2ab9728598d8e6985?refresh=5m" allowfullscreen></iframe>
+    </div>
+    <div class="bottom-buttons">
+        <a href="{% url 'dashboard' %}" class="return-btn">Return to Dashboard</a>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+</body>
+</html>

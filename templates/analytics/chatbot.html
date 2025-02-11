@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Economic Diplomacy Chatbot</title>
+    <style>
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            background-color: #E6F7FF; 
+            padding: 20px; 
+        }
+        h1 { 
+            color: #00AEEF; 
+        }
+        .chat-container { 
+            width: 90%; 
+            margin: auto; 
+        }
+        .chat-form { 
+            margin-bottom: 20px; 
+        }
+        .chat-response { 
+            background-color: #fff; 
+            border: 1px solid #ccc; 
+            padding: 10px; 
+            margin-top: 10px;
+        }
+        .button {
+            background-color: #00AEEF;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+</head>
+<body>
+    <div class="chat-container">
+        <h1>Chat with the Economic Diplomacy Assistant</h1>
+        <form method="get" class="chat-form">
+            <label for="user_input">Your Message:</label>
+            <input type="text" name="user_input" id="user_input" value="{{ user_input }}" style="width:60%;">
+            <button type="submit" class="button">Send</button>
+        </form>
+        {% if response %}
+            <div class="chat-response">
+                <h2>Assistant Response:</h2>
+                <div>{{ response|safe }}</div>
+            </div>
+        {% endif %}
+        <p><a class="button" href="{% url 'dashboard' %}">Return to Dashboard</a></p>
+    </div>
+</body>
+</html>
