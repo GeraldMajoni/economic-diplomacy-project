@@ -78,3 +78,6 @@ yarn-error.log
 
 # Ignore Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
+
+# Ignore Static
+static
