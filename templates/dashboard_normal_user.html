@@ -77,6 +77,10 @@
         th {
             background-color: #eee;
         }
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
 </head>
@@ -180,11 +184,43 @@
             <p>No economic data available for {{ selected_country }}.</p>
         {% endif %}
     
+        <h2>Imihigo – Towards a Prosperous Rwanda</h2>
+        {% if imihigos %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Quarter</th>
+                        <th>Baseline Target</th>
+                        <th>Actual Result</th>
+                        <th>Variance (%)</th>
+                        <th>Comments</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in imihigos %}
+                        <tr>
+                            <td>{{ record.quarter }}</td>
+                            <td>{{ record.baseline_target }}</td>
+                            <td>{{ record.actual_result }}</td>
+                            <td>{{ record.variance|floatformat:2 }}%</td>
+                            <td>{{ record.comments }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No Imihigo records found.</p>
+        {% endif %}
+    
+        <!-- Analytics Section with additional buttons -->
         <h2>Analytics</h2>
-        <a class="button" href="{% url 'analytics:train-model' %}">Train Model</a>
-        <a class="button" href="{% url 'analytics:predictive' %}">Predict</a>
-        <a class="button" href="{% url 'analytics:chatbot' %}">Chat with Assistant</a>
-        <a class="button" href="{% url 'analytics:grafana-dashboard' %}">View Economic Visualizations</a>
+        <div class="button-container">
+            <a class="button" href="{% url 'analytics:train-model' %}">Train Model</a>
+            <a class="button" href="{% url 'analytics:predictive' %}">Predict</a>
+            <a class="button" href="{% url 'analytics:chatbot' %}">Chat with Assistant</a>
+            <a class="button" href="{% url 'analytics:grafana-dashboard' %}">View Economic Visualizations</a>
+            <a class="button" href="{% url 'reports:download_report' %}?country={{ selected_country }}">Download Aggregated Report</a>
+        </div>
     </section>
     <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
 </body>

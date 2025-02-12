@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'diplomacy',     # new app for economic data
     'analytics',  # new app for predictive analytics and chatbot
     'content',      # new app for editable pages (About Application and Contact Us)
+    'reports', # To generate a report
 ]
 
 MIDDLEWARE = [

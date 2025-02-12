@@ -1,0 +1,258 @@
+{% load math_extras %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Report for {{ selected_country }}</title>
+    <style>
+        /* Set page margins: 2cm top/bottom, 1cm left/right */
+        @page {
+            size: A4;
+            margin: 2cm 1cm;
+        }
+        body { 
+            font-family: 'Roboto', sans-serif; 
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .report-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1, h2 { 
+            color: #00AEEF; 
+            margin-bottom: 10px;
+        }
+        p.header-date {
+            font-size: 14px;
+            color: #555;
+        }
+        .section { 
+            margin-bottom: 30px; 
+            page-break-inside: avoid;
+        }
+        /* Container for tables with minimal side padding */
+        .table-container {
+            padding: 0 5px;
+            margin-bottom: 15px;
+        }
+        /* General table styles */
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 0 auto;
+        }
+        th, td { 
+            border: 1px solid #ccc; 
+            padding: 6px;  /* Reduced padding */
+            text-align: left; 
+        }
+        th { 
+            background-color: #eee; 
+        }
+        /* Economic Data Table: use fixed layout with defined column widths and allow text wrapping */
+        .economic-data-table {
+            table-layout: fixed;
+            width: 100%;
+            font-size: 10px;  /* Smaller font for more columns */
+        }
+        .economic-data-table th,
+        .economic-data-table td {
+            overflow-wrap: break-word;  /* Allow long numbers/text to wrap */
+        }
+        /* Zimbabwe Economic Data: 11 columns (including Date) */
+        {% if selected_country == "Zimbabwe" %}
+        <colgroup>
+            <col style="width: 10%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+            <col style="width: 9%;">
+        </colgroup>
+        {% elif selected_country == "Rwanda" %}
+        <!-- Rwanda Economic Data: 5 columns (including Date) -->
+        <colgroup>
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+            <col style="width: 20%;">
+        </colgroup>
+        {% endif %}
+
+        .grafana-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .grafana-section h2 {
+            margin-bottom: 15px;
+        }
+        .grafana-img {
+            display: block;
+            margin: 0 auto;
+            max-width: 1200px;
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Report Header -->
+    <div class="report-header">
+        <h1>Dashboard Report for {{ selected_country }}</h1>
+        <p class="header-date">Report generated for: {{ report_month }}</p>
+    </div>
+    
+    <!-- Recent Companies Section -->
+    <div class="section table-container">
+        <h2>Recent Companies</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Company Name</th>
+                    <th>Date of Engagement</th>
+                    <th>Business Interests</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies %}
+                <tr>
+                    <td>{{ company.company_name }}</td>
+                    <td>{{ company.date_of_engagement }}</td>
+                    <td>{{ company.business_interests }}</td>
+                    <td>{{ company.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Economic Data Section -->
+    <div class="section table-container">
+        <h2>Economic Data (Most Recent Month)</h2>
+        <table class="economic-data-table">
+            {% if selected_country == "Zimbabwe" %}
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+                <col style="width: 9%;">
+            </colgroup>
+            {% elif selected_country == "Rwanda" %}
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+                <col style="width: 20%;">
+            </colgroup>
+            {% endif %}
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    {% if selected_country == "Zimbabwe" %}
+                        <th>Central Bank Rate</th>
+                        <th>Reserve Money</th>
+                        <th>Broad Money (M3)</th>
+                        <th>USD YoY Inflation</th>
+                        <th>ZWG MoM Inflation</th>
+                        <th>USD MoM Inflation</th>
+                        <th>Official Exchange Rate</th>
+                        <th>Parallel Exchange Rate</th>
+                        <th>Monthly Trade Balance</th>
+                        <th>GDP</th>
+                    {% elif selected_country == "Rwanda" %}
+                        <th>Year-on-Year Inflation</th>
+                        <th>Official Exchange Rate</th>
+                        <th>Monthly Trade Balance</th>
+                        <th>GDP</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in economic_data %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    {% if selected_country == "Zimbabwe" %}
+                        <td>{{ record.central_bank_rate }}</td>
+                        <td>{{ record.reserve_money }}</td>
+                        <td>{{ record.broad_money_m3 }}</td>
+                        <td>{{ record.usd_yoy_inflation }}</td>
+                        <td>{{ record.zwg_mom_inflation }}</td>
+                        <td>{{ record.usd_mom_inflation }}</td>
+                        <td>{{ record.official_exchange_rate }}</td>
+                        <td>{{ record.parallel_exchange_rate }}</td>
+                        <td>{{ record.monthly_trade_balance }}</td>
+                        <td>{{ record.gdp }}</td>
+                    {% elif selected_country == "Rwanda" %}
+                        <td>{{ record.rwanda_yoy_inflation }}</td>
+                        <td>{{ record.official_exchange_rate }}</td>
+                        <td>{{ record.monthly_trade_balance }}</td>
+                        <td>{{ record.gdp }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Imihigo Section -->
+    <div class="section table-container">
+        <h2>Imihigo – Towards a Prosperous Rwanda</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Quarter</th>
+                    <th>Baseline Target</th>
+                    <th>Actual Result</th>
+                    <th>Variance (%)</th>
+                    <th>Comments</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in imihigos %}
+                <tr>
+                    <td>{{ record.quarter }}</td>
+                    <td>{{ record.baseline_target }}</td>
+                    <td>{{ record.actual_result }}</td>
+                    <td>
+                        {% if record.baseline_target %}
+                            {{ record.baseline_target|variance:record.actual_result|floatformat:2 }}%
+                        {% else %}
+                            N/A
+                        {% endif %}
+                    </td>
+                    <td>{{ record.comments }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Grafana Dashboard Snapshot Section -->
+    <div class="section grafana-section">
+        <h2>Grafana Dashboard Snapshot</h2>
+        {% if grafana_image_data %}
+            <img src="{{ grafana_image_data }}" alt="Grafana Dashboard Snapshot" class="grafana-img">
+        {% else %}
+            <p>Grafana dashboard image not available.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

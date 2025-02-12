@@ -5,32 +5,32 @@
   <title>Economic Diplomacy Log In</title>
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
   <style>
-    /* Background image settings */
+    /* The body uses a background image that is fully visible (using 'contain') and centered */
     body {
       font-family: 'Roboto', sans-serif;
       background: url('/static/images/login_background.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background-size: contain;  /* Ensures the entire image is visible without cropping */
+      background-color: #F0F8FF;   /* Fallback background color for empty areas */
       margin: 0;
       padding: 0;
+      min-height: 100vh;
     }
-    /* Login container: narrower, reduced height, more transparency with subtle border */
+    /* Login container: maintains transparency and appropriate dimensions */
     .login-container {
-      background-color: rgba(255, 255, 255, 0.5); /* Increased transparency */
-      width: 260px;           /* Narrower container */
-      margin: 60px auto;      /* Reduced top margin to move container up */
-      padding: 15px;          /* Reduced padding to lower overall height */
+      background-color: rgba(255, 255, 255, 0.5);
+      width: 260px;
+      margin: 15vh auto;  /* Positions the container vertically using viewport height */
+      padding: 15px;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.7); /* Subtle border for better readability */
+      border: 1px solid rgba(255, 255, 255, 0.7);
     }
-    /* Heading style: slightly smaller font size */
     .login-container h1 {
       text-align: center;
       margin-bottom: 15px;
-      color: #003366;         /* Contrasting dark blue */
+      color: #003366;
       font-size: 20px;
     }
-    /* Input fields: styling remains consistent */
     .login-container input[type="text"],
     .login-container input[type="password"] {
       width: 100%;
@@ -41,7 +41,6 @@
       box-sizing: border-box;
       font-size: 14px;
     }
-    /* Button styling */
     .login-container button {
       width: 100%;
       padding: 10px;

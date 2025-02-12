@@ -10,12 +10,13 @@
       background-color: #E6F7FF;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
     header {
       background-color: #00AEEF;
       padding: 15px;
       text-align: center;
-      color: #FFFFFF; /* Changed header text color to white */
+      color: #FFFFFF;
     }
     /* Header navigation styling */
     header nav {
@@ -26,7 +27,7 @@
       gap: 10px;
     }
     header nav a {
-      color: #FFFFFF; /* White text for nav links */
+      color: #FFFFFF;
       text-decoration: none;
       font-weight: bold;
       padding: 5px 10px;
@@ -37,12 +38,6 @@
     header nav a:hover {
       border: 1px solid #FFFFFF;
     }
-    .content-placeholder {
-      text-align: center;
-      margin: 40px;
-      font-size: 24px;
-      color: #00AEEF;
-    }
     .logout-btn {
       position: fixed;
       bottom: 20px;
@@ -52,6 +47,17 @@
       padding: 10px 15px;
       border-radius: 5px;
       text-decoration: none;
+      z-index: 100;
+    }
+    /* Globe Animation Container */
+    #globe-container {
+      position: fixed;
+      bottom: 20px; /* Reduced bottom offset to move the globe further down */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 300px;
+      z-index: 1; /* Ensure it sits behind key dashboard content */
     }
   </style>
 </head>
@@ -71,11 +77,72 @@
     </nav>
   </header>
   
-  <!-- Minimal dashboard content placeholder for superuser -->
-  <div class="content-placeholder">
-    Superuser Dashboard Overview
-  </div>
-  
+  <!-- Globe Animation Container (no overlay text) -->
+  <div id="globe-container"></div>
+
   <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+
+  <!-- Three.js Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Set up the scene, camera, and renderer
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(300, 300);
+    document.getElementById('globe-container').appendChild(renderer.domElement);
+
+    // Create the globe geometry and material with an emissive tint
+    const globeGeometry = new THREE.SphereGeometry(5, 32, 32);
+    const globeTexture = new THREE.TextureLoader().load('https://cdn.jsdelivr.net/npm/three-globe@2.24.7/example/img/earth-blue-marble.jpg');
+    const globeMaterial = new THREE.MeshPhongMaterial({ 
+      map: globeTexture, 
+      emissive: 0x003366, 
+      emissiveIntensity: 0.2 
+    });
+    const globe = new THREE.Mesh(globeGeometry, globeMaterial);
+    scene.add(globe);
+
+    // Add directional light
+    const light = new THREE.DirectionalLight(0xFFFFFF, 1);
+    light.position.set(5, 3, 5);
+    scene.add(light);
+
+    // Add sample data points (e.g., representing economic data)
+    const dataPoints = [
+      { lat: -1.9403, lng: 29.8739, value: 10 }, // Rwanda
+      { lat: -19.0154, lng: 29.1549, value: 15 }, // Zimbabwe
+    ];
+    dataPoints.forEach(point => {
+      const phi = (90 - point.lat) * (Math.PI / 180);
+      const theta = (180 - point.lng) * (Math.PI / 180);
+      const x = 5.5 * Math.sin(phi) * Math.cos(theta);
+      const y = 5.5 * Math.cos(phi);
+      const z = 5.5 * Math.sin(phi) * Math.sin(theta);
+      const pointGeometry = new THREE.SphereGeometry(0.1, 8, 8);
+      const pointMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD700 });
+      const pointMesh = new THREE.Mesh(pointGeometry, pointMaterial);
+      pointMesh.position.set(x, y, z);
+      scene.add(pointMesh);
+    });
+
+    // Position the camera
+    camera.position.z = 15;
+
+    // Animation loop with a subtle pulsating scale effect for the globe
+    let scaleDirection = 1;
+    function animate() {
+      requestAnimationFrame(animate);
+      globe.rotation.y += 0.005;
+      // Pulsating effect
+      if (globe.scale.x > 1.05) scaleDirection = -1;
+      if (globe.scale.x < 0.95) scaleDirection = 1;
+      globe.scale.x += scaleDirection * 0.001;
+      globe.scale.y += scaleDirection * 0.001;
+      globe.scale.z += scaleDirection * 0.001;
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
 </body>
 </html>

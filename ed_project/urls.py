@@ -13,4 +13,5 @@ urlpatterns = [
     path('analytics/', include('analytics.urls')),  # This should pick up the app_name automatically
     path('', dashboard_view, name='dashboard'),
     path('content/', include('content.urls')),  # Include content app URLs
+    path('reports/', include('reports.urls')), # Allow download of reports
 ]
