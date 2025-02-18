@@ -40,11 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'userauth',  # our custom authentication app
+    'userauth',      # our custom authentication app
     'diplomacy',     # new app for economic data
-    'analytics',  # new app for predictive analytics and chatbot
-    'content',      # new app for editable pages (About Application and Contact Us)
-    'reports', # To generate a report
+    'analytics',     # new app for predictive analytics and chatbot
+    'content',       # new app for editable pages (About Application and Contact Us)
+    'reports',       # To generate a report
 ]
 
 MIDDLEWARE = [
@@ -92,8 +92,6 @@ DATABASES = {
     }
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
@@ -112,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
@@ -126,7 +123,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -138,9 +134,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-# Authentication Redirects
-LOGIN_REDIRECT_URL = '/analytics/grafana/'
-#LOGIN_REDIRECT_URL = '/'
+# Authentication settings: ensure the application starts at the login page.
+LOGIN_URL = '/userauth/login/'
+LOGIN_REDIRECT_URL = '/analytics/grafana/'  # After successful login, redirect here (adjust as needed)
 LOGOUT_REDIRECT_URL = '/userauth/login/'
-

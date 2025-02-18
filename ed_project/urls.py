@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from core.views import dashboard_view
-from core.views import about_application
-from core.views import contact_us
+from core.views import dashboard_view, about_application, contact_us
 
 urlpatterns = [
     path('about/', about_application, name='about-application'),
@@ -13,5 +11,5 @@ urlpatterns = [
     path('analytics/', include('analytics.urls')),  # This should pick up the app_name automatically
     path('', dashboard_view, name='dashboard'),
     path('content/', include('content.urls')),  # Include content app URLs
-    path('reports/', include('reports.urls')), # Allow download of reports
+    path('reports/', include('reports.urls')),  # Allow download of reports
 ]

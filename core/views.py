@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from datetime import date
 from diplomacy.models import Company, ZimbabweEconomicData, RwandaEconomicData, Imihigo
 
@@ -8,6 +9,7 @@ def about_application(request):
 def contact_us(request):
     return render(request, 'contact_us.html')
 
+@login_required(login_url='/userauth/login/')
 def dashboard_view(request):
     if request.user.is_superuser:
         return render(request, 'dashboard_superuser.html')

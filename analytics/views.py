@@ -1,4 +1,3 @@
-# analytics/views.py
 import os
 import joblib
 import pandas as pd
@@ -52,12 +51,11 @@ class PredictiveAnalyticsView(View):
         df = pd.DataFrame(list(qs.values()))
         
         if not df.empty:
-            # Check if models exist
             if os.path.exists(inflation_model_path) and os.path.exists(exchange_model_path):
                 inflation_model = joblib.load(inflation_model_path)
                 exchange_model = joblib.load(exchange_model_path)
                 
-                # For demonstration, use the last record as sample for predictions
+                # Use the last record for demonstration
                 inflation_features = df[['central_bank_rate', 'reserve_money', 'broad_money_m3', 'official_exchange_rate', 'parallel_exchange_rate']].iloc[-1].values.reshape(1, -1)
                 exchange_features = df[['broad_money_m3', 'reserve_money', 'monthly_trade_balance', 'zwg_mom_inflation', 'usd_yoy_inflation']].iloc[-1].values.reshape(1, -1)
                 
@@ -74,68 +72,64 @@ class PredictiveAnalyticsView(View):
         
         return render(request, self.template_name, context)
 
-
-## Chatbot view
+## Chatbot view with System Messages for output regulation
 import os
 from django.shortcuts import render
-from openai import OpenAI  # This module is used to interface with the NVIDIA endpoint via OpenAI API style
-import mistune  # Optional: converts Markdown to HTML
+from openai import OpenAI  # Interfaces with the NVIDIA endpoint via OpenAI API style
+import mistune  # Optional: Converts Markdown to HTML
 
 def chatbot_view(request):
     # Retrieve the NVIDIA API key from environment variables.
-    nvidia_api_key = "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"
+    nvidia_api_key = os.environ.get("NV_API_KEY", "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")
     
-    # Get user input from GET parameters (or from a form submission)
+    # Get user input from GET parameters
     user_input = request.GET.get('user_input', '')
     response_text = ""
     
     if user_input:
         try:
-            # Initialize the client with NVIDIA's endpoint using the new API key.
             client = OpenAI(
                 base_url="https://integrate.api.nvidia.com/v1",  # NVIDIA endpoint
                 api_key=nvidia_api_key
             )
+            # Include a system message to set context and guide responses
+            messages = [
+                {"role": "system", "content": (
+                    "You are a neutral assistant. Do not take sides on political issues. "
+                    "For visa-related queries, note that a visa is free for the first 30 days for Africans, Commonwealth Members, and Francophone Countries. "
+                    "For economic questions, include a reference to the Rwanda Development Board: https://rdb.rw/"
+                )},
+                {"role": "user", "content": user_input}
+            ]
             
-            # Create a chat completion using the new model.
             completion = client.chat.completions.create(
                 model="mistralai/mixtral-8x7b-instruct-v0.1",  # New model
-                messages=[{"role": "user", "content": user_input}],
+                messages=messages,
                 temperature=0.2,
                 top_p=0.7,
                 max_tokens=1024,
                 stream=True
             )
             
-            # Process the streamed response.
             for chunk in completion:
                 if chunk.choices[0].delta.content is not None:
                     response_text += chunk.choices[0].delta.content
         except Exception as e:
             response_text = f"Error during inference: {str(e)}"
     
-    # Optionally convert Markdown to HTML (if your response uses Markdown formatting)
+    # Convert Markdown to HTML
     markdown_converter = mistune.create_markdown()
     response_html = markdown_converter(response_text)
     
-    # Pass the processed response to the template.
     context = {
         "user_input": user_input,
         "response": response_html,
     }
     return render(request, "analytics/chatbot.html", context)
 
-
-# Grafana Dashboard
-
+# Grafana Dashboard views
 def grafana_dashboard(request):
     return render(request, 'analytics/grafana_dashboard.html')
 
-from django.shortcuts import render
-
 def grafana_link(request):
     return render(request, 'analytics/grafana_link.html')
-
-
-
-

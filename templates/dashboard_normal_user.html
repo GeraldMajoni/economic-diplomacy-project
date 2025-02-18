@@ -1,3 +1,4 @@
+{% load math_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -202,7 +203,13 @@
                             <td>{{ record.quarter }}</td>
                             <td>{{ record.baseline_target }}</td>
                             <td>{{ record.actual_result }}</td>
-                            <td>{{ record.variance|floatformat:2 }}%</td>
+                            <td>
+                                {% if record.baseline_target %}
+                                    {{ record.baseline_target|variance:record.actual_result|floatformat:2 }}%
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
                             <td>{{ record.comments }}</td>
                         </tr>
                     {% endfor %}

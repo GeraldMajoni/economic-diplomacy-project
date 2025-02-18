@@ -45,8 +45,8 @@ def download_report(request):
         "&from=2025-01-12T00%3A00%3A00.000Z"
         "&to=2025-02-10T00%3A00%3A00.000Z"
         "&timezone=browser"
-        "&width=1000"
-        "&height=1800"
+        "&width=1100"
+        "&height=2000"
     )
     
     try:
